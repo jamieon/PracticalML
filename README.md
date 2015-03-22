@@ -1,0 +1,2 @@
+# PracticalML
+Machine learning assignments
