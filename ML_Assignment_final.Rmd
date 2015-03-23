@@ -1,12 +1,9 @@
 ---
-title: "MLAssignment"
+title: "ML_Assignment_final"
 author: "jamieon"
 date: "Monday, March 23, 2015"
 output: html_document
 ---
-
-
-```{r}
 ##Practical machine learning assignment
 ##We analyse data about personal activity and build a prediction model.
 ##We use randomForest Modeling and 70% training set. 
@@ -26,7 +23,7 @@ cleanTest <- testinit[, which(NAs == 0)]
 trainingIndex <- createDataPartition(y = cleanTrain$classe, p = 0.7, list = FALSE)
 trainingSet <- cleanTrain[trainingIndex, ]
 crossValidationSet <- cleanTrain[-trainingIndex, ]
-# Removing variables that have time, or names in it, and useless new_window:
+#To Remove the variables that have time, or names in it, and useless new_window:
 removeIndex <- as.integer(c(1, 2, 3, 4, 5, 6))
 trainSet <- trainingSet[, -removeIndex]
 testSet <- cleanTest[, -removeIndex]
@@ -60,8 +57,11 @@ modelFit
 predicted <- predict(modelFit, crossValidationSet)
 SampleError <- sum(predicted == crossValidationSet$classe)/nrow(crossValidationSet)
 ##We get out-of-sample error of 0.9981
+
 ##To get data for the prediction:
 answers <- predict(modelFit, testSet)
-```
 
+```{r}
+summary(cars)
+```
 
