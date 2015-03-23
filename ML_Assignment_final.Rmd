@@ -38,24 +38,24 @@ modelFit <- train(trainSet$classe ~ ., data = trainSet, method = "rf", trControl
 ```{r}
 modelFit
 ```
-# Random Forest 
-# 
-# 13737 samples
-#    53 predictors
-#     5 classes: 'A', 'B', 'C', 'D', 'E' 
-# 
-# No pre-processing
-# Resampling: Cross-Validated (4 fold) 
-# 
-# Summary of sample sizes: 10301, 10303, 10303, 10304 
-# 
-# Resampling results across tuning parameters:
-# 
-#   mtry  Accuracy  Kappa  Accuracy SD  Kappa SD
-#   2     1         1      0.003        0.003   
-#   30    1         1      0.001        0.002   
-#   50    1         1      8e-04        0.001   
-# 
+Random Forest 
+ 
+ 13737 samples
+    53 predictors
+     5 classes: 'A', 'B', 'C', 'D', 'E' 
+ 
+ No pre-processing
+ Resampling: Cross-Validated (4 fold) 
+ 
+ Summary of sample sizes: 10301, 10303, 10303, 10304 
+ 
+ Resampling results across tuning parameters:
+ 
+   mtry  Accuracy  Kappa  Accuracy SD  Kappa SD
+   2     1         1      0.003        0.003   
+   30    1         1      0.001        0.002   
+   50    1         1      8e-04        0.001   
+ 
 ## Accuracy was used to select the optimal model using  the largest value.
 ## The final value used for the model was mtry = 27.
 
