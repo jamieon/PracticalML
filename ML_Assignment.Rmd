@@ -1,5 +1,5 @@
 ---
-title: "ML_assignment"
+title: "MLAssignment"
 author: "jamieon"
 date: "Monday, March 23, 2015"
 output: html_document
