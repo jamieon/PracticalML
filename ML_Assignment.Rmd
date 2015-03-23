@@ -5,18 +5,63 @@ date: "Monday, March 23, 2015"
 output: html_document
 ---
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r}
-summary(cars)
+##Practical machine learning assignment
+##We analyse data about personal activity and build a prediction model.
+##We use randomForest Modeling and 70% training set. 
+
+##To load the data:
+library(caret)
+testinit <- read.csv("pml-testing.csv", na.strings = c("NA", ""))
+traininit <- read.csv("pml-training.csv", na.strings = c("NA", ""))
+NAs <- apply(traininit, 2, function(x) {
+  sum(is.na(x))
+})
+cleanTrain <- traininit[, which(NAs == 0)]
+cleanTest <- testinit[, which(NAs == 0)]
+
+##To get data for training and cross validation:
+##We use 70% for training and 30% for Cross Validation:
+trainingIndex <- createDataPartition(y = cleanTrain$classe, p = 0.7, list = FALSE)
+trainingSet <- cleanTrain[trainingIndex, ]
+crossValidationSet <- cleanTrain[-trainingIndex, ]
+# Removing variables that have time, or names in it, and useless new_window:
+removeIndex <- as.integer(c(1, 2, 3, 4, 5, 6))
+trainSet <- trainingSet[, -removeIndex]
+testSet <- cleanTest[, -removeIndex]
+mytrControl = trainControl(method = "cv", number = 4)
+modelFit <- train(trainSet$classe ~ ., data = trainSet, method = "rf", trControl = mytrControl)
+## Loading required package: randomForest
+
+modelFit
+## Random Forest 
+## 
+## 13737 samples
+##    53 predictors
+##     5 classes: 'A', 'B', 'C', 'D', 'E' 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (4 fold) 
+## 
+## Summary of sample sizes: 10301, 10303, 10303, 10304 
+## 
+## Resampling results across tuning parameters:
+## 
+##   mtry  Accuracy  Kappa  Accuracy SD  Kappa SD
+##   2     1         1      0.003        0.003   
+##   30    1         1      0.001        0.002   
+##   50    1         1      8e-04        0.001   
+## 
+## Accuracy was used to select the optimal model using  the largest value.
+## The final value used for the model was mtry = 27.
+
+##Errors from the cross validation set:
+predicted <- predict(modelFit, crossValidationSet)
+SampleError <- sum(predicted == crossValidationSet$classe)/nrow(crossValidationSet)
+##We get out-of-sample error of 0.9981
+##To get data for the prediction:
+answers <- predict(modelFit, testSet)
 ```
 
-You can also embed plots, for example:
 
-```{r, echo=FALSE}
-plot(cars)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
