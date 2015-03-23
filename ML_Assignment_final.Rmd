@@ -9,6 +9,7 @@ output: html_document
 ##We use randomForest Modeling and 70% training set. 
 
 ##To load the data:
+```{r}
 library(caret)
 testinit <- read.csv("pml-testing.csv", na.strings = c("NA", ""))
 traininit <- read.csv("pml-training.csv", na.strings = c("NA", ""))
@@ -17,21 +18,26 @@ NAs <- apply(traininit, 2, function(x) {
 })
 cleanTrain <- traininit[, which(NAs == 0)]
 cleanTest <- testinit[, which(NAs == 0)]
-
+```
 ##To get data for training and cross validation:
 ##We use 70% for training and 30% for Cross Validation:
+```{r}
 trainingIndex <- createDataPartition(y = cleanTrain$classe, p = 0.7, list = FALSE)
 trainingSet <- cleanTrain[trainingIndex, ]
 crossValidationSet <- cleanTrain[-trainingIndex, ]
+```
 ##To Remove the variables that have time, or names in it, and useless new_window:
+```{r}
 removeIndex <- as.integer(c(1, 2, 3, 4, 5, 6))
 trainSet <- trainingSet[, -removeIndex]
 testSet <- cleanTest[, -removeIndex]
 mytrControl = trainControl(method = "cv", number = 4)
 modelFit <- train(trainSet$classe ~ ., data = trainSet, method = "rf", trControl = mytrControl)
+```
 # Loading required package: randomForest
-
+```{r}
 modelFit
+```
 # Random Forest 
 # 
 # 13737 samples
@@ -54,14 +60,14 @@ modelFit
 ## The final value used for the model was mtry = 27.
 
 ##Errors from the cross validation set:
+```{r}
 predicted <- predict(modelFit, crossValidationSet)
 SampleError <- sum(predicted == crossValidationSet$classe)/nrow(crossValidationSet)
+```
 ##We get out-of-sample error of 0.9981
 
 ##To get data for the prediction:
-answers <- predict(modelFit, testSet)
-
 ```{r}
-summary(cars)
+answers <- predict(modelFit, testSet)
 ```
 
